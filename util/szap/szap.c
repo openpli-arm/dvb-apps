@@ -257,8 +257,9 @@ int zap_to(unsigned int adapter, unsigned int frontend, unsigned int demux,
 
 		dmx_source = 0;
 		if (ioctl(dmxfdv, DMX_SET_SOURCE, dmx_source) == -1) {
-			fprintf(stderr, "DMX_SET_SOURCE failed\n");
-			return FALSE;
+			fprintf(stderr, "DMX_SET_SOURCE failed, but ignore\n");
+			//close(fefd);
+			//return FALSE;
 		}
 
 		if ((dmxfda = open(dmxdev, O_RDWR)) < 0) {

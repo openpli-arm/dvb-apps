@@ -126,12 +126,30 @@ int audioChannelSelect(int fd, char *arg)
 	return 0;
 }
 
+int audioSetVolume(int fd, char *arg)
+{
+	int vol;
+	struct audio_mixer mixer;
+
+	if (!arg)
+		return -1;
+	vol = atoi(arg);
+	memset(&mixer, 0, sizeof(mixer));
+	mixer.volume_left = vol;
+	mixer.volume_right = vol;
+	if (ioctl(fd, AUDIO_SET_MIXER, &mixer) == -1)
+		perror("AUDIO_SET_MIXER");
+	return 0;
+}
+
 int audioGetStatus(int fd, char *arg)
 {
 	struct audio_status _stat;
 
 	if (arg)
 		return -1;
+
+	memset(&_stat, 0, sizeof(_stat));
 	if (ioctl(fd, AUDIO_GET_STATUS, &_stat) == -1) {
 		perror("AUDIO_GET_STATUS");
 		return 0;
@@ -305,6 +323,8 @@ int videoGetStatus(int fd, char *arg)
 
 	if (arg)
 		return -1;
+	
+	memset(&_stat, 0, sizeof(_stat));
 	if (ioctl(fd, VIDEO_GET_STATUS, &_stat) == -1){
 		perror("VIDEO_GET_STATUS");
 		return 0;
@@ -465,6 +485,7 @@ cmd_t audio_cmds[] =
 	{ "avsync", "n: 0 unsync, 1 sync", audioSetAVSync },
 	{ "bypass", "n: 0 normal, 1 bypass", audioSetBypassMode },
 	{ "channel", "n: 0 stereo, 1 left, 2 right", audioChannelSelect },
+	{ "volume", "0-63", audioSetVolume},
 	{ "status", "", audioGetStatus },
 	{ NULL, NULL, NULL }
 };
