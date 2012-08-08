@@ -4,7 +4,7 @@
 
 all clean install:
 	$(MAKE) -C atsc_epg $@
-	$(MAKE) -C av7110_loadkeys $@
+#	$(MAKE) -C av7110_loadkeys $@
 	$(MAKE) -C dib3000-watch $@
 	$(MAKE) -C dst-utils $@
 	$(MAKE) -C dvbdate $@

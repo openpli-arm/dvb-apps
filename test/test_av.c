@@ -436,6 +436,18 @@ int videoStillPicture(int fd, char *arg)
 	return 0;
 }
 
+int videoSetType(int fd, char *arg)
+{
+	int type = 0;
+	if (!arg)
+		return -1;
+
+	type = atoi(arg);
+	if (ioctl(fd, VIDEO_SET_STREAMTYPE, type) == -1)
+		perror("VIDEO_STOP");
+	return 0;
+}
+
 typedef int (* cmd_func_t)(int fd, char *args);
 typedef struct {
 	char *cmd;
@@ -471,6 +483,7 @@ cmd_t video_cmds[] =
 	{ "stillpic", "filename", videoStillPicture},
 	{ "format", "n: 0 4:3, 1 16:9", videoFormat},
 	{ "dispformat", "n: 0 pan&scan, 1 letter box, 2 center cut out", videoDisplayFormat},
+	{ "type", "MPEG1:1 MPEG2:2 MPEG4:3", videoSetType},
 	{ NULL, NULL, NULL }
 };
 int usage(void)

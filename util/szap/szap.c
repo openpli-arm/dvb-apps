@@ -223,6 +223,7 @@ int zap_to(unsigned int adapter, unsigned int frontend, unsigned int demux,
 	uint32_t ifreq;
 	int hiband, result;
 	static struct dvb_frontend_info fe_info;
+	int dmx_source = 0;
 
 	if (!fefd) {
 		snprintf(fedev, sizeof(fedev), FRONTENDDEVICE, adapter, frontend);
@@ -254,14 +255,20 @@ int zap_to(unsigned int adapter, unsigned int frontend, unsigned int demux,
 			return FALSE;
 		}
 
+		dmx_source = 0;
+		if (ioctl(dmxfdv, DMX_SET_SOURCE, dmx_source) == -1) {
+			fprintf(stderr, "DMX_SET_SOURCE failed\n");
+			return FALSE;
+		}
+
 		if ((dmxfda = open(dmxdev, O_RDWR)) < 0) {
 			perror("opening audio demux failed");
 			close(fefd);
 			return FALSE;
 		}
 
-		if (dvr == 0)	/* DMX_OUT_DECODER */
-			audiofd = open(auddev, O_RDWR);
+		//if (dvr == 0)	/* DMX_OUT_DECODER */
+			//audiofd = open(auddev, O_RDWR);
 
 		if (rec_psi) {
 			if ((patfd = open(dmxdev, O_RDWR)) < 0) {
