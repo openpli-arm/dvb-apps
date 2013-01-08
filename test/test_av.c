@@ -504,7 +504,7 @@ cmd_t video_cmds[] =
 	{ "stillpic", "filename", videoStillPicture},
 	{ "format", "n: 0 4:3, 1 16:9", videoFormat},
 	{ "dispformat", "n: 0 pan&scan, 1 letter box, 2 center cut out", videoDisplayFormat},
-	{ "type", "MPEG1:1 MPEG2:2 MPEG4:3", videoSetType},
+	{ "type", "n: 0 mpeg2, 1 h264, 3 vc1, 4 mpeg4, 5 vc1_sm, 6 mpeg1", videoSetType},
 	{ NULL, NULL, NULL }
 };
 int usage(void)

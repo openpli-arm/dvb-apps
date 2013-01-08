@@ -223,7 +223,6 @@ int zap_to(unsigned int adapter, unsigned int frontend, unsigned int demux,
 	uint32_t ifreq;
 	int hiband, result;
 	static struct dvb_frontend_info fe_info;
-	int dmx_source = 0;
 
 	if (!fefd) {
 		snprintf(fedev, sizeof(fedev), FRONTENDDEVICE, adapter, frontend);
@@ -255,11 +254,10 @@ int zap_to(unsigned int adapter, unsigned int frontend, unsigned int demux,
 			return FALSE;
 		}
 
-		dmx_source = 0;
-		if (ioctl(dmxfdv, DMX_SET_SOURCE, dmx_source) == -1) {
-			fprintf(stderr, "DMX_SET_SOURCE failed, but ignore\n");
-			//close(fefd);
-			//return FALSE;
+		if (ioctl(dmxfdv, DMX_SET_SOURCE, &frontend) == -1) {
+			perror("DMX_SET_SOURCE failed");
+			close(fefd);
+			return FALSE;
 		}
 
 		if ((dmxfda = open(dmxdev, O_RDWR)) < 0) {
