@@ -116,6 +116,18 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
+	unsigned long size = 8 * 188 * 1024;
+	if(ioctl(dmxfd, DMX_SET_BUFFER_SIZE, size) < 0) {
+		perror("set demux source failed!");
+		return 1;
+	}
+
+	int source = DMX_SOURCE_FRONT0;
+	if(ioctl(dmxfd, DMX_SET_SOURCE, &source) < 0) {
+		perror("set demux source failed!");
+		return 1;
+	}
+	
 	if (getenv("BUF_SIZE") && ((BUF_SIZE = strtoul(getenv("BUF_SIZE"), NULL, 0)) > 0))
 		fprintf(stderr, "BUF_SIZE = %lu\n", BUF_SIZE);
 
