@@ -24,6 +24,8 @@ binaries = diseqc          \
 	   szap2           \
 	   lock_s
 
+inst_bin = $(binaries)
+
 .PHONY: all
 
 all: $(binaries)

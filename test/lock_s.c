@@ -455,6 +455,8 @@ int main(int argc, char *argv[])
 	struct lnb_types_st lnb;
 	struct sec_params sec;
 
+	memset(&sec, 0, sizeof(sec));
+
 	lnb = lnbs[0]; /* default is Universal LNB */
 	while ((opt = getopt(argc, argv, "Hh:a:f:p:s:l:")) != -1) {
 		switch (opt) {
